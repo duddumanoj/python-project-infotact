@@ -1,0 +1,11 @@
+services:
+  statbot:
+    build: .
+    container_name: statbot-pro
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./static:/app/static
+    env_file:
+      - .env

@@ -1,0 +1,20 @@
+# Ignore environment variables
+.env
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+env/
+
+# Uploaded files (if auto-generated)
+uploads/
+
+# Generated charts/images (if auto-generated)
+static/charts/
+
+# OS files
+.DS_Store
+Thumbs.db

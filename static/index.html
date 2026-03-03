@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>StatBot Pro</title>
+  <style>
+    body { font-family: Arial; max-width: 900px; margin: auto; }
+    button { padding: 10px; margin-top: 10px; }
+    pre { background: #f4f4f4; padding: 10px; }
+    img { max-width: 100%; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<h1>📊 StatBot Pro</h1>
+
+<h3>1️⃣ Upload CSV</h3>
+<input type="file" id="fileInput">
+<button onclick="upload()">Upload</button>
+
+<h3>2️⃣ Ask Question</h3>
+<input type="text" id="question" style="width:100%" placeholder="e.g. Calculate total sales by region and show a bar chart">
+<button onclick="analyze()">Analyze</button>
+
+<h3>📈 Result</h3>
+<pre id="result"></pre>
+<img id="chart">
+
+<script>
+let fileId = null;
+
+async function upload() {
+  const file = document.getElementById("fileInput").files[0];
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await fetch("/upload", { method: "POST", body: formData });
+  const data = await res.json();
+
+  fileId = data.file_id;
+  alert("Uploaded!");
+}
+
+async function analyze() {
+  const question = document.getElementById("question").value;
+
+  const res = await fetch("/analyze", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ file_id: fileId, question })
+  });
+
+  const data = await res.json();
+
+  document.getElementById("result").textContent =
+    JSON.stringify(data.result, null, 2);
+
+  if (data.chart_url) {
+    document.getElementById("chart").src = data.chart_url;
+  }
+}
+</script>
+
+</body>
+</html>
